@@ -128,7 +128,9 @@ public class ProfileActivity extends AppCompatActivity {
             profileSendMsgRequest.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    profileAvatar.setEnabled(false);
+                    if (profileSendMsgRequest.getText().toString().equals("Cancel")){
+                        CancelRequest();
+                    }
                     if (currentState.equals("new")) {
                         SendChatRequest();
                     }
