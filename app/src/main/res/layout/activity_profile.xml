@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProfileActivity">
+
+
+    <ImageView
+        android:id="@+id/profile_cover"
+        android:layout_width="wrap_content"
+        android:layout_height="280dp"
+       android:scaleType="fitXY"
+        app:srcCompat="@drawable/front_of_ecc" />
+    >
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_avatar"
+        android:layout_width="190dp"
+        android:layout_height="190dp"
+        android:layout_marginTop="150dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/profile_image" />
+
+    <TextView
+        android:id="@+id/profile_user_name"
+        android:layout_below="@+id/profile_avatar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:text="User Name" />
+    <TextView
+        android:id="@+id/profile_user_status"
+        android:layout_below="@+id/profile_user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:inputType="textMultiLine"
+        android:text="User's status" />
+
+    <Button
+    android:id="@+id/profile_send_msg"
+    android:layout_below="@+id/profile_user_status"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:layout_marginLeft="65dp"
+    android:layout_marginRight="65dp"
+    android:textColor="@android:color/background_light"
+    android:background="@drawable/buttons"
+    android:textStyle="bold"
+    android:text="Send Message"
+    android:textAllCaps="false"
+    />
+    <Button
+        android:id="@+id/profile_cancel_request"
+        android:layout_below="@+id/profile_send_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="65dp"
+        android:layout_marginRight="65dp"
+        android:textColor="@android:color/background_light"
+        android:background="@drawable/buttons"
+        android:textStyle="bold"
+        android:text="Cancel"
+        android:visibility="invisible"
+        android:textAllCaps="false"
+        />
+</RelativeLayout>
