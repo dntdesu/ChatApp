@@ -60,13 +60,13 @@ public class ProfileActivity extends AppCompatActivity {
                     profileUserName.setText(userName);
                     profileStatus.setText(userStatus);
 
-                    ChatRequest();
+                    ChatRequestMgr();
                 } else {
                     String userName = dataSnapshot.child("name").getValue().toString();
                     String userStatus = dataSnapshot.child("status").getValue().toString();
                     profileUserName.setText(userName);
                     profileStatus.setText(userStatus);
-                    ChatRequest();
+                    ChatRequestMgr();
                 }
             }
 
@@ -76,7 +76,7 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void ChatRequest() {
+    private void ChatRequestMgr() {
         chatRef.child(currentID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

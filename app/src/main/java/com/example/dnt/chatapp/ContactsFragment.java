@@ -47,7 +47,8 @@ public class ContactsFragment extends Fragment {
         contactView = inflater.inflate(R.layout.fragment_contacts, container, false);
         contactRecyclerView = contactView.findViewById(R.id.contact_view);
         contactRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        currentUser = auth.getCurrentUser().getUid().toString();
+        auth = FirebaseAuth.getInstance();
+        currentUser = auth.getCurrentUser().getUid();
         contactRef = FirebaseDatabase.getInstance().getReference().child("Contacts").child(currentUser);
         userRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
