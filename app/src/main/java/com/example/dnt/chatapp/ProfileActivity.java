@@ -18,6 +18,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -25,7 +27,7 @@ public class ProfileActivity extends AppCompatActivity {
     private CircleImageView profileAvatar;
     private TextView profileUserName, profileStatus;
     private Button profileSendMsgRequest, profileCancelRequest;
-    private DatabaseReference userRef, chatRef, contactRef;
+    private DatabaseReference userRef, chatRef, contactRef, notificationRef;
     private FirebaseAuth mAuth;
 
     @Override
@@ -44,6 +46,7 @@ public class ProfileActivity extends AppCompatActivity {
         userRef = FirebaseDatabase.getInstance().getReference().child("Users");
         contactRef = FirebaseDatabase.getInstance().getReference().child("Contacts");
         chatRef = FirebaseDatabase.getInstance().getReference().child("Chat Request");
+        notificationRef = FirebaseDatabase.getInstance().getReference().child("Notification");
         RetrieveUserInfo();
 
     }
@@ -128,7 +131,7 @@ public class ProfileActivity extends AppCompatActivity {
             profileSendMsgRequest.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (profileSendMsgRequest.getText().toString().equals("Cancel")){
+                    if (profileSendMsgRequest.getText().toString().equals("Cancel")) {
                         CancelRequest();
                     }
                     if (currentState.equals("new")) {
@@ -161,9 +164,22 @@ public class ProfileActivity extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
-                                                profileSendMsgRequest.setEnabled(true);
-                                                currentState = "request_sent";
-                                                profileSendMsgRequest.setText("Cancel");
+                                                HashMap<String, String> chatNotificationMap = new HashMap<>();
+                                                chatNotificationMap.put("from", currentID);
+                                                chatNotificationMap.put("type", "request");
+                                                notificationRef.child(receiverUserID).push()
+                                                        .setValue(chatNotificationMap)
+                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    profileSendMsgRequest.setEnabled(true);
+                                                                    currentState = "request_sent";
+                                                                    profileSendMsgRequest.setText("Cancel");
+                                                                }
+                                                            }
+
+                                                        });
                                             }
                                         }
                                     });
@@ -237,6 +253,7 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                 });
     }
+
     private void Unfriend() {
         contactRef.child(currentID).child(receiverUserID)
                 .removeValue()

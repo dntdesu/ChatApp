@@ -27,6 +27,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 public class LoginActivity extends AppCompatActivity {
     private Button btn_LoginButton, btn_PhoneLoginButton;
@@ -37,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressDialog loadingBar;
     private GoogleSignInClient mGoogleSignInClient;
     static final int RC_SignIn = 0;
+    private DatabaseReference userRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,8 +102,18 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                SendUserToMainActivity();
-                                loadingBar.dismiss();
+                                String currentID = mAuth.getCurrentUser().getUid();
+                                String deviceToken = FirebaseInstanceId.getInstance().getToken();
+                                userRef.child(currentID).child("deviceToken")
+                                        .setValue(deviceToken).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()){
+                                            SendUserToMainActivity();
+                                            loadingBar.dismiss();
+                                        }
+                                    }
+                                });
                             } else {
                                 String msg = task.getException().toString();
                                 int index = msg.indexOf("Exception") + 11;
@@ -120,6 +134,7 @@ public class LoginActivity extends AppCompatActivity {
         txt_forgetPassword = findViewById(R.id.forget_password_link);
         loadingBar = new ProgressDialog(this);
         mAuth = FirebaseAuth.getInstance();
+        userRef = FirebaseDatabase.getInstance().getReference().child("Users");
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -172,7 +187,18 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
 
-                            //currentUser = mAuth.getCurrentUser();
+                            String currentID = mAuth.getCurrentUser().getUid();
+                            String deviceToken = FirebaseInstanceId.getInstance().getToken();
+                            userRef.child(currentID).child("deviceToken")
+                                    .setValue(deviceToken).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()){
+                                        SendUserToMainActivity();
+                                        loadingBar.dismiss();
+                                    }
+                                }
+                            });
                             SendUserToMainActivity();
                         } else {
                             Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();

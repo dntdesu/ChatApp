@@ -1,6 +1,7 @@
 package com.example.dnt.chatapp;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -68,19 +69,31 @@ public class ChatFragment extends Fragment {
                     @Override
                     protected void onBindViewHolder(@NonNull final ChatViewHolder holder, int position, @NonNull Contacts model) {
                         final String userID = getRef(position).getKey();
-
+                        final String[] avatar = {"default"};
                         userRef.child(userID).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if (dataSnapshot.hasChild("image")){
-                                    final String avatar = dataSnapshot.child("image").getValue().toString();
-                                    Picasso.get().load(avatar).placeholder(R.drawable.profile_image).into(holder.avatar);
-                                }
+                                if(dataSnapshot.exists()){
+                                    if (dataSnapshot.hasChild("image")){
+                                        avatar[0] = dataSnapshot.child("image").getValue().toString();
+                                        Picasso.get().load(avatar[0]).placeholder(R.drawable.profile_image).into(holder.avatar);
+                                    }
 
-                                final String name = dataSnapshot.child("name").getValue().toString();
-                                final String status = dataSnapshot.child("status").getValue().toString();
-                                holder.name.setText(name);
-                                holder.status.setText("Last seen : ");
+                                    final String name = dataSnapshot.child("name").getValue().toString();
+                                    final String status = dataSnapshot.child("status").getValue().toString();
+                                    holder.name.setText(name);
+                                    holder.status.setText("Last seen : ");
+                                    holder.itemView.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Intent chatIntent = new Intent(getContext(), ChatActivity.class);
+                                            chatIntent.putExtra("ID", userID);
+                                            chatIntent.putExtra("name", name);
+                                            chatIntent.putExtra("avatar", avatar[0]);
+                                            startActivity(chatIntent);
+                                        }
+                                    });
+                                }
 
 
                             }

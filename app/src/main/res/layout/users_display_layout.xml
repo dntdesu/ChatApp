@@ -30,7 +30,7 @@
                     android:layout_height="wrap_content"
                     android:text="user name"
                     android:textAlignment="textStart"
-                    android:textSize="18sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
                     android:layout_marginLeft="10dp"
                     />
@@ -38,7 +38,9 @@
                     android:id="@+id/user_online_status"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:src="@drawable/online"/>
+                    android:src="@drawable/online"
+                    android:visibility="invisible"
+                    />
             </LinearLayout>
 
             <TextView
@@ -47,37 +49,9 @@
                 android:layout_height="wrap_content"
                 android:text="user status"
                 android:textAlignment="textStart"
-                android:textSize="16dp"
+                android:textSize="18sp"
                 android:layout_marginLeft="10dp"
                 />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
-                <Button
-                    android:id="@+id/display_accept"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:text="Accept"
-                    android:textSize="15sp"
-                    android:textAllCaps="false"
-                    android:background="@android:color/holo_green_light"
-                    android:visibility="invisible"
-                    />
-                <Button
-                    android:id="@+id/display_deny"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:text="Deny"
-                    android:layout_marginStart="10dp"
-                    android:textSize="15sp"
-                    android:textAllCaps="false"
-                    android:background="@android:color/holo_red_dark"
-                    android:textColor="@android:color/background_light"
-                    android:visibility="invisible"
-                    />
-            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
